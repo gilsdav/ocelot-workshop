@@ -8,5 +8,6 @@ namespace PizzaGraphQL.Repositories
     {
         IEnumerable<Pizza> GetAll(bool loadToppings);
         Pizza GetById(int id, bool loadToppings);
+        Pizza Add(Pizza newPizza);
     }
 }

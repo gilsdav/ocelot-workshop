@@ -7,7 +7,7 @@ namespace PizzaGraphQL.GraphQL
     {
         public ToppingType() {
             Field(x => x.Id);
-            Field(x => x.Name, true).Description("Name of topping");
+            Field(x => x.Name, false).Description("Name of topping");
         }
     }
 }

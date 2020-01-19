@@ -8,7 +8,7 @@ namespace PizzaGraphQL.GraphQL
         {
             Name = "PizzaInputType";
             Field<NonNullGraphType<StringGraphType>>("name");
-            Field<ListGraphType<IntGraphType>>("toppings");
+            Field<NonNullGraphType<ListGraphType<IntGraphType>>>("toppings");
         }
     }
 }

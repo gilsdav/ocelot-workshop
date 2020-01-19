@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using GraphQL.Types;
 using PizzaGraphQL.Entities;
 using PizzaGraphQL.Repositories;
+using System.Linq;
 
 namespace PizzaGraphQL.GraphQL
 {
@@ -13,13 +15,24 @@ namespace PizzaGraphQL.GraphQL
                 "createPizza",
                 arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<PizzaInputType>> { Name = "pizza" }
-            )/*,
+            ),
             resolve: context =>
             {
-                var pizza = context.GetArgument<Pizza>("pizza");
-                // return playerRepository.Add(player);
-                return pizza;
-            }*/);
+                dynamic pizzaInput = context.Arguments["pizza"];
+                string name = pizzaInput["name"];
+                List<object> toppingKeys = pizzaInput["toppings"];
+                var pizza = new Pizza() {
+                    Name = name,
+                    PizzaToppings = toppingKeys.Select(tk => new PizzaTopping(){ ToppingId = (int) tk }).ToList()
+                };
+                pizzaRepository.Add(pizza);
+                return this.loadPizza(pizza.Id, context, pizzaRepository);
+            });
+        }
+
+        private Pizza loadPizza(int id, ResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {
+            var loadToppings = context.SubFields.FirstOrDefault(kv => kv.Key == "toppings").Key != null;
+            return pizzaRepository.GetById(id, loadToppings);
         }
     }
 }

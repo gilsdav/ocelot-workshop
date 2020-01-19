@@ -34,6 +34,13 @@ namespace PizzaGraphQL.Repositories.Implmentations
             return query.AsNoTracking().FirstOrDefault(p => p.Id == id);
         }
 
+        public Pizza Add(Pizza newPizza)
+        {
+            var command = _context.Pizzas.Add(newPizza);
+            _context.SaveChanges();
+            return command.Entity;
+        }
+
         private IQueryable<Pizza> AddToppingsIntoPizzaQuery(IQueryable<Pizza> query)
         {
             return query.Include(p => p.PizzaToppings)
