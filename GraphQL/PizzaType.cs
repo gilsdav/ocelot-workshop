@@ -1,6 +1,5 @@
 using GraphQL.Types;
 using PizzaGraphQL.Entities;
-using PizzaGraphQL.Repositories;
 using System.Linq;
 
 namespace PizzaGraphQL.GraphQL

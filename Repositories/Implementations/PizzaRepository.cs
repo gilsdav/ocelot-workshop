@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using GraphQL.Types;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using PizzaGraphQL.Entities;
 using PizzaGraphQL.Entities.Context;
 
@@ -11,6 +12,7 @@ namespace PizzaGraphQL.Repositories.Implmentations
     public class PizzaRepository : IPizzaRepository
     {
         private readonly ApplicationContext _context;
+        private readonly ISubject<Pizza> _pizzaStream = new ReplaySubject<Pizza>(1);
 
         public PizzaRepository(ApplicationContext context)
         {
@@ -38,7 +40,18 @@ namespace PizzaGraphQL.Repositories.Implmentations
         {
             var command = _context.Pizzas.Add(newPizza);
             _context.SaveChanges();
+            _pizzaStream.OnNext(command.Entity);
             return command.Entity;
+        }
+
+        public IObservable<Pizza> ListenPizzaChanges()
+        {
+            return _pizzaStream
+                .Select(pizza =>
+                {
+                    return pizza;
+                })
+                .AsObservable();
         }
 
         private IQueryable<Pizza> AddToppingsIntoPizzaQuery(IQueryable<Pizza> query)

@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  db:
+    container_name: PizzaGraphSQL
+    image: exoplatform/sqlserver:2017-CU8
+    environment:
+      - SA_PASSWORD=PizzaGraphQL123+
+      - SQLSERVER_DATABASE=PizzaGraphQL
+      - SQLSERVER_USER=PizzaGraphQL
+      - SQLSERVER_PASSWORD=PizzaGraphQL123+
+    ports:
+      - "1433:1433"

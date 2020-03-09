@@ -25,13 +25,13 @@ namespace PizzaGraphQL.GraphQL
                 resolve: context => toppingRepository.GetAll());
         }
 
-        private Pizza loadPizza(ResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {
-            var id = context.GetArgument<int>("id");
+        private Pizza loadPizza(IResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {
+            int id = (int)context.Arguments["id"];
             var loadToppings = context.SubFields.FirstOrDefault(kv => kv.Key == "toppings").Key != null;
             return pizzaRepository.GetById(id, loadToppings);
         }
 
-        private IEnumerable<Pizza> loadAllPizzas(ResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {
+        private IEnumerable<Pizza> loadAllPizzas(IResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {
             var loadToppings = context.SubFields.FirstOrDefault(kv => kv.Key == "toppings").Key != null;
             return pizzaRepository.GetAll(loadToppings);
         }

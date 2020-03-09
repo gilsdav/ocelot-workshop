@@ -41,10 +41,11 @@ namespace PizzaGraphQL
             #endregion
 
             #region Entity
+            // TODO: set all singleton as scoped
             services.AddDbContext<ApplicationContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("sqlConString")));
-            services.AddScoped<IPizzaRepository, PizzaRepository>();
-            services.AddScoped<IToppingRepository, ToppingRepository>();
+                opt.UseSqlServer(Configuration.GetConnectionString("sqlConString")), ServiceLifetime.Singleton);
+            services.AddSingleton<IPizzaRepository, PizzaRepository>();
+            services.AddSingleton<IToppingRepository, ToppingRepository>();
             #endregion
 
             services.AddMvc(options => {
@@ -53,12 +54,16 @@ namespace PizzaGraphQL
 
             #region GraphQL
             // services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddScoped<PizzaQuery>();
-            services.AddScoped<PizzaMutation>();
-            services.AddScoped<PizzaSchema>();
-            services.AddScoped<BobSchema>();
+            services.AddSingleton<PizzaQuery>();
+            services.AddSingleton<PizzaMutation>();
+            services.AddSingleton<PizzaSubscription>();
+            services.AddSingleton<PizzaSchema>();
+            services.AddSingleton<BobSchema>();
             // services.AddSingleton<ISchema, PizzaSchema>();
-            services.AddGraphQL(o => { o.ExposeExceptions = false;  }).AddGraphTypes(ServiceLifetime.Scoped);
+            services.AddGraphQL(o => { o.ExposeExceptions = false;  })
+                .AddSystemTextJson(deserializerSettings => { }, serializerSettings => { })  
+                .AddWebSockets() // For subscriptions
+                .AddGraphTypes(ServiceLifetime.Singleton);
             #endregion
             
         }
@@ -71,7 +76,9 @@ namespace PizzaGraphQL
                 app.UseDeveloperExceptionPage();
             }
             // app.UseHttpsRedirection();
-            app.UseGraphQL<PizzaSchema>();
+            app.UseWebSockets();
+            app.UseGraphQLWebSockets<PizzaSchema>("/graphql");
+            app.UseGraphQL<PizzaSchema>("/graphql");
             app.UseGraphQL<BobSchema>("/bob");
             // app.UseMvc();
             if (env.IsDevelopment())

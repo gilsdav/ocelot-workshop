@@ -30,7 +30,7 @@ namespace PizzaGraphQL.GraphQL
             });
         }
 
-        private Pizza loadPizza(int id, ResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {
+        private Pizza loadPizza(int id, IResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {
             var loadToppings = context.SubFields.FirstOrDefault(kv => kv.Key == "toppings").Key != null;
             return pizzaRepository.GetById(id, loadToppings);
         }
