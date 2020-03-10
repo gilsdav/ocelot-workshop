@@ -11,6 +11,8 @@ using PizzaGraphQL.Entities.Context;
 using PizzaGraphQL.GraphQL;
 using PizzaGraphQL.Repositories;
 using PizzaGraphQL.Repositories.Implmentations;
+using PizzaGraphQL.Services;
+using PizzaGraphQL.Services.Implementations;
 
 namespace PizzaGraphQL
 {
@@ -41,11 +43,11 @@ namespace PizzaGraphQL
             #endregion
 
             #region Entity
-            // TODO: set all singleton as scoped
             services.AddDbContext<ApplicationContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("sqlConString")), ServiceLifetime.Singleton);
-            services.AddSingleton<IPizzaRepository, PizzaRepository>();
-            services.AddSingleton<IToppingRepository, ToppingRepository>();
+                opt.UseSqlServer(Configuration.GetConnectionString("sqlConString")));
+            services.AddSingleton<IEventsService, EventsService>();
+            services.AddScoped<IPizzaRepository, PizzaRepository>();
+            services.AddScoped<IToppingRepository, ToppingRepository>();
             #endregion
 
             services.AddMvc(options => {
@@ -54,16 +56,16 @@ namespace PizzaGraphQL
 
             #region GraphQL
             // services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddSingleton<PizzaQuery>();
-            services.AddSingleton<PizzaMutation>();
-            services.AddSingleton<PizzaSubscription>();
-            services.AddSingleton<PizzaSchema>();
-            services.AddSingleton<BobSchema>();
+            services.AddScoped<PizzaQuery>();
+            services.AddScoped<PizzaMutation>();
+            services.AddScoped<PizzaSubscription>();
+            services.AddScoped<PizzaSchema>();
+            services.AddScoped<BobSchema>();
             // services.AddSingleton<ISchema, PizzaSchema>();
             services.AddGraphQL(o => { o.ExposeExceptions = false;  })
                 .AddSystemTextJson(deserializerSettings => { }, serializerSettings => { })  
                 .AddWebSockets() // For subscriptions
-                .AddGraphTypes(ServiceLifetime.Singleton);
+                .AddGraphTypes(ServiceLifetime.Scoped);
             #endregion
             
         }

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using GraphQL.Types;
 using PizzaGraphQL.Entities;
 
 namespace PizzaGraphQL.Repositories
@@ -10,6 +8,5 @@ namespace PizzaGraphQL.Repositories
         IEnumerable<Pizza> GetAll(bool loadToppings);
         Pizza GetById(int id, bool loadToppings);
         Pizza Add(Pizza newPizza);
-        IObservable<Pizza> ListenPizzaChanges();
     }
 }

@@ -3,17 +3,17 @@ using GraphQL.Resolvers;
 using GraphQL.Subscription;
 using GraphQL.Types;
 using PizzaGraphQL.Entities;
-using PizzaGraphQL.Repositories;
+using PizzaGraphQL.Services;
 
 namespace PizzaGraphQL.GraphQL
 {
     public class PizzaSubscription : ObjectGraphType
     {
-        private readonly IPizzaRepository _pizzaRepository;
+        private readonly IEventsService _eventsService;
 
-        public PizzaSubscription(IPizzaRepository pizzaRepository)
+        public PizzaSubscription(IEventsService eventsService)
         {
-            _pizzaRepository = pizzaRepository;
+            _eventsService = eventsService;
             AddField(new EventStreamFieldType
             {
                 Name = "pizzaAdded",
@@ -30,7 +30,7 @@ namespace PizzaGraphQL.GraphQL
 
         private IObservable<Pizza> Subscribe(IResolveEventStreamContext context)
         {
-            return _pizzaRepository.ListenPizzaChanges();
+            return _eventsService.ListenPizzaChanges();
         }
     }
 }
