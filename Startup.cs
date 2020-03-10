@@ -53,9 +53,9 @@ namespace PizzaGraphQL
             services.AddScoped<IToppingRepository, ToppingRepository>();
             #endregion
 
-            services.AddMvc(options => {
-                options.EnableEndpointRouting = false;
-            });
+            // services.AddMvc(options => {
+            //     options.EnableEndpointRouting = false;
+            // });
 
             #region authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
