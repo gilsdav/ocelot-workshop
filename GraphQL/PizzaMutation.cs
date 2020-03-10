@@ -3,12 +3,13 @@ using GraphQL.Types;
 using PizzaGraphQL.Entities;
 using PizzaGraphQL.Repositories;
 using System.Linq;
+using PizzaGraphQL.Services;
 
 namespace PizzaGraphQL.GraphQL
 {
     public class PizzaMutation: ObjectGraphType
     {
-        public PizzaMutation(IPizzaRepository pizzaRepository) {
+        public PizzaMutation(IPizzaRepository pizzaRepository, IAuthenticationService authenticationService) {
             Name = "MyMutationName";
 
             Field<PizzaType>(
@@ -28,6 +29,17 @@ namespace PizzaGraphQL.GraphQL
                 pizzaRepository.Add(pizza);
                 return this.loadPizza(pizza.Id, context, pizzaRepository);
             });
+
+            FieldAsync<StringGraphType>(
+                "login",
+                arguments: new QueryArguments(
+                    new QueryArgument<StringGraphType> { Name = "user" },
+                    new QueryArgument<StringGraphType> { Name = "password" }),
+                resolve: async context => {
+                    var user = (string)context.Arguments["user"];
+                    var password = (string)context.Arguments["password"];
+                    return await authenticationService.Login(user, password);
+                });
         }
 
         private Pizza loadPizza(int id, IResolveFieldContext<object> context, IPizzaRepository pizzaRepository) {

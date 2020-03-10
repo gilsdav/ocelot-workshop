@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GraphQL.Server.Authorization.AspNetCore;
 using GraphQL.Types;
 using PizzaGraphQL.Entities;
 using PizzaGraphQL.Repositories;
@@ -9,6 +10,7 @@ namespace PizzaGraphQL.GraphQL
     public class PizzaQuery: ObjectGraphType
     {
         public PizzaQuery(IPizzaRepository pizzaRepository, IToppingRepository toppingRepository) {
+            // this.AuthorizeWith("Authorized");
             Field<PizzaType>(
                 "pizza",
                 arguments: new QueryArguments(
@@ -18,7 +20,8 @@ namespace PizzaGraphQL.GraphQL
             
             Field<ListGraphType<PizzaType>>(
                 "pizzas",
-                resolve: context => this.loadAllPizzas(context, pizzaRepository));
+                resolve: context => this.loadAllPizzas(context, pizzaRepository))
+                    .AuthorizeWith("LoggedIn");
 
             Field<ListGraphType<ToppingType>>(
                 "toppings",

@@ -1,5 +1,8 @@
+using System.Security.Claims;
 using GraphQL.Server;
+using GraphQL.Server.Ui.GraphiQL;
 using GraphQL.Server.Ui.Playground;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -54,18 +57,30 @@ namespace PizzaGraphQL
                 options.EnableEndpointRouting = false;
             });
 
+            #region authentication
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
+            {
+                o.Cookie.Name = "graph-auth";
+            });
+            services.AddHttpContextAccessor();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            #endregion
+
             #region GraphQL
-            // services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddScoped<PizzaQuery>();
             services.AddScoped<PizzaMutation>();
             services.AddScoped<PizzaSubscription>();
             services.AddScoped<PizzaSchema>();
             services.AddScoped<BobSchema>();
-            // services.AddSingleton<ISchema, PizzaSchema>();
+
             services.AddGraphQL(o => { o.ExposeExceptions = false;  })
                 .AddSystemTextJson(deserializerSettings => { }, serializerSettings => { })  
                 .AddWebSockets() // For subscriptions
-                .AddGraphTypes(ServiceLifetime.Scoped);
+                .AddGraphTypes(ServiceLifetime.Scoped)
+                .AddGraphQLAuthorization(options => {
+                    options.AddPolicy("LoggedIn", p => p.RequireAuthenticatedUser());
+                    options.AddPolicy("Bob", p => p.RequireClaim(ClaimTypes.Name, "Bob"));
+                });
             #endregion
             
         }
@@ -78,6 +93,7 @@ namespace PizzaGraphQL
                 app.UseDeveloperExceptionPage();
             }
             // app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseWebSockets();
             app.UseGraphQLWebSockets<PizzaSchema>("/graphql");
             app.UseGraphQL<PizzaSchema>("/graphql");
@@ -85,7 +101,12 @@ namespace PizzaGraphQL
             // app.UseMvc();
             if (env.IsDevelopment())
             {
-                app.UseGraphQLPlayground(options: new GraphQLPlaygroundOptions());
+                app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+                app.UseGraphiQLServer(new GraphiQLOptions
+                {
+                    Path = "/ui/graphiql",
+                    GraphQLEndPoint = "/graphql"
+                });
             }
         }
     }
