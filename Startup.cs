@@ -71,7 +71,7 @@ namespace PizzaGraphQL
             services.AddScoped<PizzaMutation>();
             services.AddScoped<PizzaSubscription>();
             services.AddScoped<PizzaSchema>();
-            services.AddScoped<BobSchema>();
+            services.AddScoped<SecuritySchema>();
 
             services.AddGraphQL(o => { o.ExposeExceptions = false;  })
                 .AddSystemTextJson(deserializerSettings => { }, serializerSettings => { })  
@@ -97,15 +97,20 @@ namespace PizzaGraphQL
             app.UseWebSockets();
             app.UseGraphQLWebSockets<PizzaSchema>("/graphql");
             app.UseGraphQL<PizzaSchema>("/graphql");
-            app.UseGraphQL<BobSchema>("/bob");
+            app.UseGraphQL<SecuritySchema>("/auth");
             // app.UseMvc();
             if (env.IsDevelopment())
             {
                 app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
                 app.UseGraphiQLServer(new GraphiQLOptions
                 {
-                    Path = "/ui/graphiql",
+                    Path = "/ui/graphiql/pizza",
                     GraphQLEndPoint = "/graphql"
+                });
+                app.UseGraphiQLServer(new GraphiQLOptions
+                {
+                    Path = "/ui/graphiql/security",
+                    GraphQLEndPoint = "/auth"
                 });
             }
         }
