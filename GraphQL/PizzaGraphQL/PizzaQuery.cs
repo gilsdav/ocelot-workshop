@@ -14,7 +14,7 @@ namespace PizzaGraphQL.GraphQL.PizzaGraphQL
             Field<PizzaType>(
                 "pizza",
                 arguments: new QueryArguments(
-                    new QueryArgument<IntGraphType> { Name = "id" }
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "id" }
                 ),
                 resolve: context => this.loadPizza(context, pizzaRepository));
             
