@@ -2,7 +2,7 @@ using GraphQL.Types;
 using PizzaGraphQL.Entities;
 using System.Linq;
 
-namespace PizzaGraphQL.GraphQL
+namespace PizzaGraphQL.GraphQL.PizzaGraphQL
 {
     public class PizzaType : ObjectGraphType<Pizza>
     {

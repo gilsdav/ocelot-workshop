@@ -5,7 +5,7 @@ using GraphQL.Types;
 using PizzaGraphQL.Entities;
 using PizzaGraphQL.Repositories;
 
-namespace PizzaGraphQL.GraphQL
+namespace PizzaGraphQL.GraphQL.PizzaGraphQL
 {
     public class PizzaQuery: ObjectGraphType
     {

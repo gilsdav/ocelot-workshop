@@ -1,6 +1,6 @@
 using GraphQL.Types;
 
-namespace PizzaGraphQL.GraphQL
+namespace PizzaGraphQL.GraphQL.SecurityGraphQL
 {
     public class SecurityQuery: ObjectGraphType
     {

@@ -1,7 +1,7 @@
 using GraphQL.Types;
 using PizzaGraphQL.Entities;
 
-namespace PizzaGraphQL.GraphQL
+namespace PizzaGraphQL.GraphQL.PizzaGraphQL
 {
     public class ToppingType : ObjectGraphType<Topping>
     {

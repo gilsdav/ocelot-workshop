@@ -4,7 +4,7 @@ using PizzaGraphQL.Entities;
 using PizzaGraphQL.Repositories;
 using System.Linq;
 
-namespace PizzaGraphQL.GraphQL
+namespace PizzaGraphQL.GraphQL.PizzaGraphQL
 {
     public class PizzaMutation: ObjectGraphType
     {

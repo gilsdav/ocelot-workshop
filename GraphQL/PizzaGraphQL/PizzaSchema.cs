@@ -1,7 +1,6 @@
-using System;
 using GraphQL.Types;
 
-namespace PizzaGraphQL.GraphQL
+namespace PizzaGraphQL.GraphQL.PizzaGraphQL
 {
     public class PizzaSchema: Schema
     {

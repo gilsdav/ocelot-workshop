@@ -1,7 +1,7 @@
 using GraphQL.Types;
 using PizzaGraphQL.Services;
 
-namespace PizzaGraphQL.GraphQL
+namespace PizzaGraphQL.GraphQL.SecurityGraphQL
 {
     public class SecurityMutation: ObjectGraphType
     {
