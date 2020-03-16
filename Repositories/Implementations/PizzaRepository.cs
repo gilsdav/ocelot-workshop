@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using Microsoft.EntityFrameworkCore;
 using PizzaGraphQL.Entities;
 using PizzaGraphQL.Entities.Context;
+using PizzaGraphQL.Repositories.Implementations;
 using PizzaGraphQL.Services;
 
 namespace PizzaGraphQL.Repositories.Implmentations
@@ -44,6 +43,28 @@ namespace PizzaGraphQL.Repositories.Implmentations
             _context.SaveChanges();
             _eventsService.EmitPizzaChange(command.Entity);
             return command.Entity;
+        }
+
+        public Pizza Update(Pizza pizza) {
+            // Remove all toppings links
+            var pizzaFromDB = this.GetById(pizza.Id, true);
+            _context.TryUpdateManyToMany(
+                pizzaFromDB.PizzaToppings,
+                pizza.PizzaToppings,
+                pt => $"{pt.PizzaId}_{pt.ToppingId}"
+            );
+            // Update Pizza
+            pizzaFromDB.Name = pizza.Name;
+            var command = _context.Pizzas.Update(pizzaFromDB);
+            _context.SaveChanges();
+            _eventsService.EmitPizzaChange(command.Entity);
+            return command.Entity;
+        }
+
+        public void Delete(int pizzaId) {
+            var pizzaFromDB = this.GetById(pizzaId, true);
+            var command = _context.Pizzas.Remove(pizzaFromDB);
+            _context.SaveChanges();
         }
 
         

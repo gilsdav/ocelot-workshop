@@ -8,5 +8,7 @@ namespace PizzaGraphQL.Repositories
         IEnumerable<Pizza> GetAll(bool loadToppings);
         Pizza GetById(int id, bool loadToppings);
         Pizza Add(Pizza newPizza);
+        Pizza Update(Pizza pizza);
+        void Delete(int pizzaId);
     }
 }

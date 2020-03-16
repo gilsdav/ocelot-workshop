@@ -28,6 +28,41 @@ namespace PizzaGraphQL.GraphQL.PizzaGraphQL
                     pizzaRepository.Add(pizza);
                     return this.loadPizza(pizza.Id, context, pizzaRepository);
                 });
+            
+            Field<PizzaType>(
+                "updatePizza",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<PizzaInputType>> { Name = "pizza" }
+                ),
+                resolve: context =>
+                {
+                    dynamic pizzaInput = context.Arguments["pizza"];
+                    string name = pizzaInput["name"];
+                    int id = pizzaInput["id"];
+                    List<object> toppingKeys = pizzaInput["toppings"];
+                    var pizza = new Pizza() {
+                        Id = id,
+                        Name = name,
+                        PizzaToppings = toppingKeys.Select(tk => new PizzaTopping(){
+                            PizzaId = id,
+                            ToppingId = (int) tk
+                        }).ToList()
+                    };
+                    pizzaRepository.Update(pizza);
+                    return this.loadPizza(pizza.Id, context, pizzaRepository);
+                });
+
+            Field<StringGraphType>(
+                "deletePizza",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "id" }
+                ),
+                resolve: context =>
+                {
+                    int id = (int) context.Arguments["id"];
+                    pizzaRepository.Delete(id);
+                    return "OK";
+                });
 
         }
 

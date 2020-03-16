@@ -12,17 +12,17 @@ namespace PizzaGraphQL.Entities.Context
                 new Topping
                 {
                     Id = 1,
-                    Name = "gorgonzola"
+                    Name = "bacon"
                 },
                 new Topping
                 {
                     Id = 2,
-                    Name = "salami"
+                    Name = "pepperoni"
                 },
                 new Topping
                 {
                     Id = 3,
-                    Name = "thon"
+                    Name = "tomato"
                 }
            );
         }

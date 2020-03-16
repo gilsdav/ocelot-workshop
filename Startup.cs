@@ -5,6 +5,7 @@ using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -58,10 +59,20 @@ namespace PizzaGraphQL
             //     options.EnableEndpointRouting = false;
             // });
 
+            services.AddCors(o => o.AddPolicy("MainPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:5000","http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }));
+
             #region authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(o =>
             {
                 o.Cookie.Name = "graph-auth";
+                o.Cookie.SameSite = SameSiteMode.Unspecified;
+                o.Cookie.HttpOnly = false;
             });
             services.AddHttpContextAccessor();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -93,6 +104,9 @@ namespace PizzaGraphQL
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable Cors
+            app.UseCors("MainPolicy");
             // app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseWebSockets();
