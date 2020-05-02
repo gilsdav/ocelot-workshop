@@ -26,8 +26,13 @@ services:
       - db
   pizza-pricing:
     build: ./services/pizza-pricing
-    image: pizza-commands:latest
+    image: pizza-pricing:latest
     ports:
       - "8082:80"
     depends_on:
       - db
+  identity-server:
+    build: ./identity-server
+    image: identity-server:latest
+    ports:
+      - "8090:80"
