@@ -10,3 +10,11 @@ services:
       - SQLSERVER_PASSWORD=PizzaGraphQL123+
     ports:
       - "1433:1433"
+  pizza-management:
+    build: ./services/pizza-management
+    image: pizza-management:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+

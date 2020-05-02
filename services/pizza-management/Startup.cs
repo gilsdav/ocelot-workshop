@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Claims;
 using GraphQL.Server;
 using GraphQL.Server.Ui.GraphiQL;
@@ -114,8 +115,8 @@ namespace PizzaGraphQL
             app.UseGraphQL<PizzaSchema>("/graphql");
             app.UseGraphQL<SecuritySchema>("/auth");
             // app.UseMvc();
-            if (env.IsDevelopment())
-            {
+            // if (env.IsDevelopment())
+            // {
                 app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
                 app.UseGraphiQLServer(new GraphiQLOptions
                 {
@@ -127,6 +128,13 @@ namespace PizzaGraphQL
                     Path = "/ui/graphiql/security",
                     GraphQLEndPoint = "/auth"
                 });
+            // }
+            this.ApplyMigrations(db);
+        }
+
+        public void ApplyMigrations(ApplicationContext context) {
+            if (context.Database.GetPendingMigrations().Any()) {
+                context.Database.Migrate();
             }
         }
     }
