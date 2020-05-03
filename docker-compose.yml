@@ -36,3 +36,8 @@ services:
     image: identity-server:latest
     ports:
       - "8090:80"
+  public_gateway:
+    build: './api-gateway/public_gateway'
+    image: public_gateway:latest
+    ports:
+      - "8091:80"
