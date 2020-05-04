@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-namespace public_gateway
+namespace gateway
 {
     public class Program
     {

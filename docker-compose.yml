@@ -10,11 +10,15 @@ services:
       - SQLSERVER_PASSWORD=PizzaGraphQL123+
     ports:
       - "1433:1433"
+    networks: 
+      - private
   pizza-management:
     build: ./services/pizza-management
     image: pizza-management:latest
     ports:
       - "8080:80"
+    networks: 
+      - private
     depends_on:
       - db
   pizza-commands:
@@ -24,11 +28,15 @@ services:
       - "8081:80"
     depends_on:
       - db
+    networks: 
+      - private
   pizza-pricing:
     build: ./services/pizza-pricing
     image: pizza-pricing:latest
     ports:
       - "8082:80"
+    networks: 
+      - private
     depends_on:
       - db
   identity-server:
@@ -36,8 +44,30 @@ services:
     image: identity-server:latest
     ports:
       - "8090:80"
+    networks: 
+      - public
+      - private
   public_gateway:
-    build: './api-gateway/public_gateway'
+    build: './api-gateway/gateway'
     image: public_gateway:latest
     ports:
       - "8091:80"
+    networks: 
+      - public
+      - private
+    volumes: 
+      - ./api-gateway/config/public.ocelot.json:/app/ocelot.json
+  private_gateway:
+    build: './api-gateway/gateway'
+    image: private_gateway:latest
+    ports:
+      - "8092:80"
+    networks: 
+      - private
+    volumes: 
+      - ./api-gateway/config/private.ocelot.json:/app/ocelot.json
+networks:
+  public:
+    internal: false
+  private:
+    internal: true
