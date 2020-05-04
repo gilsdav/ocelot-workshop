@@ -9,7 +9,7 @@
                     "Port": 80
                 }
             ],
-            "UpstreamPathTemplate": "/blu/{everything}",
+            "UpstreamPathTemplate": "/{everything}",
             "UpstreamHttpMethod": []
         }
     ]
