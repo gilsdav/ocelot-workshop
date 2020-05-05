@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Claims;
 using GraphQL.Server;
@@ -50,7 +51,18 @@ namespace PizzaGraphQL
 
             #region Entity
             services.AddDbContext<ApplicationContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("sqlConString")));
+                opt.UseSqlServer(
+                    Configuration.GetConnectionString("sqlConString"),
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 10,
+                            maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorNumbersToAdd: null
+                        );
+                    }
+                )
+            );
             services.AddSingleton<IEventsService, EventsService>();
             services.AddScoped<IPizzaRepository, PizzaRepository>();
             services.AddScoped<IToppingRepository, ToppingRepository>();

@@ -12,12 +12,12 @@ services:
       - "1433:1433"
     networks: 
       - private
-    healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U "$$SQLSERVER_USER" -P "$$SQLSERVER_PASSWORD" -Q "SELECT name FROM master.sys.databases WHERE name = N'$$SQLSERVER_DATABASE'" || exit 1
-      interval: 10s
-      timeout: 3s
-      retries: 10
-      start_period: 10s
+    # healthcheck:
+    #   test: /opt/mssql-tools/bin/sqlcmd -S localhost -U "$$SQLSERVER_USER" -P "$$SQLSERVER_PASSWORD" -Q "SELECT name FROM master.sys.databases WHERE name = N'$$SQLSERVER_DATABASE'" || exit 1
+    #   interval: 10s
+    #   timeout: 3s
+    #   retries: 10
+    #   start_period: 10s
   pizza-management:
     build: ./services/pizza-management
     image: pizza-management:latest
