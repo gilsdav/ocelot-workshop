@@ -1,0 +1,28 @@
+{
+    "ReRoutes": [
+        {
+            "DownstreamPathTemplate": "/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "pizza-commands",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/pizza-commands/{everything}",
+            "UpstreamHttpMethod": []
+        },
+        {
+            "DownstreamPathTemplate": "/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "pizza-management",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/pizza-management/{everything}",
+            "UpstreamHttpMethod": []
+        }
+    ]
+}
