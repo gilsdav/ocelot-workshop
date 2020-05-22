@@ -13,4 +13,4 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "identity-server.dll", "--urls=http://0.0.0.0:5002/"]
+ENTRYPOINT ["dotnet", "login-app.dll"]

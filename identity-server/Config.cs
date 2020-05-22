@@ -12,7 +12,25 @@ namespace identity_server
         {
             return new List<Client>
             {
- 
+                new Client
+                {
+                    ClientId = "interactive.confidential.short",
+                    ClientName = "Interactive client with short token lifetime (Code with PKCE)",
+
+                    RedirectUris = { "http://localhost:8091/signin-oidc", "http://localhost:8092/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:8091", "http://localhost:8092" },
+
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    RequireConsent = false,
+
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                    RequirePkce = true,
+                    AllowedScopes = { "openid", "profile", "email", "api" },
+
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.ReUse
+                    // AccessTokenLifetime = 75
+                },
             };
         }
  

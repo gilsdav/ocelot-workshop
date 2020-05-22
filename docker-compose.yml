@@ -49,9 +49,11 @@ services:
     build: ./identity-server
     image: identity-server:latest
     ports:
-      - "8090:80"
+      - "5002:5002"
     networks: 
+      - local
       - private
+      - public
   public_gateway:
     build: './api-gateway/gateway'
     image: public_gateway:latest
@@ -72,6 +74,15 @@ services:
       - private
     volumes: 
       - ./api-gateway/config/private.ocelot.json:/app/ocelot.json
+  front-app:
+    build: './apps/login-app'
+    image: front-app:latest
+    ports:
+      - "8070:80"
+    networks: 
+      - local
+      - private
+      - public
 networks:
   public: {}
   local: {}
