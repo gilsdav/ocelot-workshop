@@ -1,5 +1,9 @@
 ﻿@page "/"
+@* @using Microsoft.AspNetCore.Authentication *@
+@using Cloudcrate.AspNetCore.Blazor.Browser.Storage
+@inject LocalStorage Storage
 @inject AuthenticationStateProvider AuthState
+@inject TokenProvider Token
 
 <h1>Hello, @Username</h1>
 
@@ -24,5 +28,7 @@
             .FirstOrDefault() ?? string.Empty;
         
         await base.OnInitializedAsync();
+
+        Storage.SetItemAsync("access_token", Token.AccessToken);
     }
 }

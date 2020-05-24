@@ -58,7 +58,6 @@ namespace gateway
             .ConfigureLogging((hostingContext, logging) =>
             {
                 //add your logging
-                logging.ClearProviders();
                 logging.AddConsole();
             })
             .UseIISIntegration()
