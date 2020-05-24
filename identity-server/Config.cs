@@ -1,4 +1,5 @@
 using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System.Collections.Generic;
@@ -25,12 +26,28 @@ namespace identity_server
 
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequirePkce = true,
-                    AllowedScopes = { "openid", "profile", "email", "api" },
+                    AllowedScopes = { "openid", "profile", "email", "api", "public-gateway" },
 
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.ReUse
                     // AccessTokenLifetime = 75
                 },
+                // new Client
+                // {
+                //     ClientId = "public-gateway",
+                //     ClientSecrets = new List<Secret>
+                //     {
+                //         new Secret("secret".Sha256())
+                //     },
+                //     ClientName = "public api gateway",
+                //     // Flow = Flows.ResourceOwner,
+                //     AllowedScopes =
+                //     {
+                //         IdentityServerConstants.StandardScopes.OpenId,
+                //         "read"
+                //     },
+                //     Enabled = true
+                // }
             };
         }
  
@@ -38,7 +55,14 @@ namespace identity_server
         {
             return new List<ApiResource>
             {
- 
+                new ApiResource
+                {
+                    Name = "public-gateway",
+                    Description = "Ocelot public Gateway",
+                    ApiSecrets = {
+                       new Secret("secret".Sha256())
+                    }
+                }
             };
         }
 
