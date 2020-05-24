@@ -13,7 +13,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Authentication;
 using login_app.Data;
+using Cloudcrate.AspNetCore.Blazor.Browser.Storage;
 
 namespace login_app
 {
@@ -34,6 +36,8 @@ namespace login_app
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<TokenProvider>();
+            services.AddStorage();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookies";
@@ -42,10 +46,17 @@ namespace login_app
             .AddCookie("Cookies")
             .AddOpenIdConnect("oidc", options =>
             {
+                options.SignInScheme = "Cookies";
+
                 options.Authority = "http://identity-server:5002/";
                 options.ClientId = "interactive.confidential.short"; // 75 seconds
                 options.ClientSecret = "secret";
-                options.ResponseType = "code";
+                options.ResponseType = "code token";
+
+                options.Scope.Add("public-gateway");
+                // options.Scope.Add("offline_access");
+                options.ClaimActions.MapJsonKey("website", "website");
+
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.RequireHttpsMetadata = false;
@@ -60,7 +71,7 @@ namespace login_app
                     },
                     OnRedirectToIdentityProvider = async context =>
                     {
-                        context.ProtocolMessage.RedirectUri = "http://localhost:8091/signin-oidc"; // http://localhost:8091/front/index.html
+                        context.ProtocolMessage.RedirectUri = "http://localhost:8091/signin-oidc";
                         await Task.FromResult(0);
                     }
                 };

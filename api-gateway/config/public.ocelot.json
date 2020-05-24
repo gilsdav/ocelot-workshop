@@ -1,6 +1,22 @@
 {
     "ReRoutes": [
         {
+            "DownstreamPathTemplate": "/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "pizza-commands",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/pizza-commands",
+            "UpstreamHttpMethod": [],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "IdentityServerKey",
+                "AllowedScopes": ["openid"]
+            }
+        },
+        {
             "DownstreamPathTemplate": "/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
@@ -10,7 +26,11 @@
                 }
             ],
             "UpstreamPathTemplate": "/pizza-commands/{everything}",
-            "UpstreamHttpMethod": []
+            "UpstreamHttpMethod": [],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "IdentityServerKey",
+                "AllowedScopes": []
+            }
         },
         {
             "DownstreamPathTemplate": "/{everything}",
