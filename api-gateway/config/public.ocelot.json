@@ -45,19 +45,8 @@
             "UpstreamHttpMethod": []
         },
         {
-            "DownstreamPathTemplate": "/_blazor{everything}",
-            "DownstreamScheme": "ws",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "front-app",
-                    "Port": 80
-                }
-            ],
-            "UpstreamPathTemplate": "/_blazor{everything}"
-        },
-        {
             "DownstreamPathTemplate": "/{everything}",
-            "DownstreamScheme": "http",
+            "DownstreamScheme": "ws",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "front-app",
