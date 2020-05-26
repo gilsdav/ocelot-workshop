@@ -7,6 +7,7 @@
     protected override Task OnInitializedAsync()
     {
         TokenProvider.AccessToken = InitialState.AccessToken;
+        TokenProvider.IdToken = InitialState.IdToken;
         // TokenProvider.RefreshToken = InitialState.RefreshToken;
 
         return base.OnInitializedAsync();
