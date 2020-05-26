@@ -30,5 +30,6 @@
         await base.OnInitializedAsync();
 
         Storage.SetItemAsync("access_token", Token.AccessToken);
+        Storage.SetItemAsync("id_token", Token.IdToken);
     }
 }

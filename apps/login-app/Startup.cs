@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.AspNetCore.Authentication;
 using login_app.Data;
 using Cloudcrate.AspNetCore.Blazor.Browser.Storage;
 
@@ -49,13 +43,11 @@ namespace login_app
                 options.SignInScheme = "Cookies";
 
                 options.Authority = "http://identity-server:5002/";
-                options.ClientId = "interactive.confidential.short"; // 75 seconds
+                options.ClientId = "public";
                 options.ClientSecret = "secret";
-                options.ResponseType = "code token";
+                options.ResponseType = "id_token token";
 
                 options.Scope.Add("public-gateway");
-                // options.Scope.Add("offline_access");
-                options.ClaimActions.MapJsonKey("website", "website");
 
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
