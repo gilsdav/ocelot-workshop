@@ -1,4 +1,5 @@
 using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System.Collections.Generic;
@@ -12,7 +13,48 @@ namespace identity_server
         {
             return new List<Client>
             {
- 
+                new Client
+                {
+                    ClientId = "interactive.confidential.short",
+                    ClientName = "Interactive client with short token lifetime (Code with PKCE)",
+
+                    RedirectUris = { "http://localhost:8091/signin-oidc", "http://localhost:8092/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:8091/signout-callback-oidc", "http://localhost:8092/signout-callback-oidc" },
+
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    RequireConsent = false,
+
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    // RequirePkce = true,
+                    AllowedScopes = { 
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        // "email",
+                        // "api",
+                        "public-gateway"
+                    },
+
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    AllowAccessTokensViaBrowser = true
+                    // AccessTokenLifetime = 75
+                },
+                // new Client
+                // {
+                //     ClientId = "public-gateway",
+                //     ClientSecrets = new List<Secret>
+                //     {
+                //         new Secret("secret".Sha256())
+                //     },
+                //     ClientName = "public api gateway",
+                //     // Flow = Flows.ResourceOwner,
+                //     AllowedScopes =
+                //     {
+                //         IdentityServerConstants.StandardScopes.OpenId,
+                //         "read"
+                //     },
+                //     Enabled = true
+                // }
             };
         }
  
@@ -20,7 +62,9 @@ namespace identity_server
         {
             return new List<ApiResource>
             {
- 
+                new ApiResource("public-gateway", "Ocelot public Gateway"){
+                   ApiSecrets = { new Secret("secret".Sha256())},
+                }
             };
         }
 
@@ -29,7 +73,7 @@ namespace identity_server
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.Profile()
             };
         }
 

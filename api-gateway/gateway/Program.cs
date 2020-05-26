@@ -1,9 +1,19 @@
 using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+
+using System;
+using IdentityModel.AspNetCore.OAuth2Introspection;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace gateway
 {
@@ -25,15 +35,35 @@ namespace gateway
             })
             .ConfigureServices(s =>
             {
+                var authenticationProviderKey = "IdentityServerKey";
+                Action<IdentityServerAuthenticationOptions> options = o =>
+                {
+                    o.Authority = "http://identity-server:5002";
+                    o.ApiName = "public-gateway";
+                    o.SupportedTokens = SupportedTokens.Both;
+                    o.RequireHttpsMetadata = false;
+                    o.ApiSecret = "secret";
+                };
+                // s.AddAuthentication(options =>
+                // {
+                //     options.DefaultScheme = "Cookies";
+                //     options.DefaultChallengeScheme = "oidc";
+                // })
+                //     .AddCookie("Cookies")
+                s.AddAuthentication()
+                    .AddIdentityServerAuthentication(authenticationProviderKey, options);
+
                 s.AddOcelot();
             })
             .ConfigureLogging((hostingContext, logging) =>
             {
                 //add your logging
+                logging.AddConsole();
             })
             .UseIISIntegration()
             .Configure(app =>
             {
+                app.UseWebSockets();
                 app.UseOcelot().Wait();
             })
             .Build()
