@@ -15,46 +15,30 @@ namespace identity_server
             {
                 new Client
                 {
-                    ClientId = "interactive.confidential.short",
-                    ClientName = "Interactive client with short token lifetime (Code with PKCE)",
+                    ClientId = "public",
+                    ClientName = "Token for public apis",
 
-                    RedirectUris = { "http://localhost:8091/signin-oidc", "http://localhost:8092/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:8091/signout-callback-oidc", "http://localhost:8092/signout-callback-oidc" },
+                    RedirectUris = { "http://localhost:8091/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:8091/signout-callback-oidc" },
 
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     RequireConsent = false,
 
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    AllowedGrantTypes = GrantTypes.Implicit,
                     // RequirePkce = true,
                     AllowedScopes = { 
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        // "email",
-                        // "api",
                         "public-gateway"
                     },
 
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.ReUse,
-                    AllowAccessTokensViaBrowser = true
+                    AllowAccessTokensViaBrowser = true,
+                    AlwaysSendClientClaims = true,
+                    AlwaysIncludeUserClaimsInIdToken = true
                     // AccessTokenLifetime = 75
                 },
-                // new Client
-                // {
-                //     ClientId = "public-gateway",
-                //     ClientSecrets = new List<Secret>
-                //     {
-                //         new Secret("secret".Sha256())
-                //     },
-                //     ClientName = "public api gateway",
-                //     // Flow = Flows.ResourceOwner,
-                //     AllowedScopes =
-                //     {
-                //         IdentityServerConstants.StandardScopes.OpenId,
-                //         "read"
-                //     },
-                //     Enabled = true
-                // }
             };
         }
  
@@ -62,7 +46,14 @@ namespace identity_server
         {
             return new List<ApiResource>
             {
-                new ApiResource("public-gateway", "Ocelot public Gateway"){
+                new ApiResource(
+                    "public-gateway",
+                    "Ocelot public Gateway",
+                    new [] {
+                        JwtClaimTypes.EmailVerified,
+                        "admin"
+                    }
+                ){
                    ApiSecrets = { new Secret("secret".Sha256())},
                 }
             };
@@ -88,7 +79,7 @@ namespace identity_server
                     new Claim(JwtClaimTypes.GivenName, "Alice"),
                     new Claim(JwtClaimTypes.FamilyName, "Smith"),
                     new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                    new Claim(JwtClaimTypes.EmailVerified, "false", ClaimValueTypes.Boolean),
                     new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
                     new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
                 }
@@ -103,7 +94,7 @@ namespace identity_server
                     new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                     new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
                     new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                    new Claim("location", "somewhere")
+                    new Claim("admin", "true", ClaimValueTypes.Boolean)
                 }
             }
             };
