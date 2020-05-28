@@ -12,6 +12,7 @@ services:
       - "1433:1433"
     networks: 
       - private
+      - local # for dev
     # healthcheck:
     #   test: /opt/mssql-tools/bin/sqlcmd -S localhost -U "$$SQLSERVER_USER" -P "$$SQLSERVER_PASSWORD" -Q "SELECT name FROM master.sys.databases WHERE name = N'$$SQLSERVER_DATABASE'" || exit 1
     #   interval: 10s
