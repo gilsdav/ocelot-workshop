@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -36,6 +35,11 @@ namespace pizza_commands.Controllers
         {
             command.Id = 10;
             return command;
+        }
+
+        [HttpGet("customer")]
+        public string GetCurrentCustomer() {
+            return Request.Headers["CustomerId"];
         }
 
     }

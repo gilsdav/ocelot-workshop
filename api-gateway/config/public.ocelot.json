@@ -17,6 +17,9 @@
             },
             "RouteClaimsRequirement": {
                 "email_verified": "true"
+            },
+            "AddHeadersToRequest": {
+                "CustomerId": "Claims[sub] > value"
             }
         },
         {
