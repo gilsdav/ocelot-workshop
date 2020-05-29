@@ -129,16 +129,19 @@ namespace PizzaGraphQL
             // app.UseMvc();
             // if (env.IsDevelopment())
             // {
-                app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+                app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() {
+                    Path ="/ui/playground",
+                    GraphQLEndPoint = "/pizza-management/graphql"
+                });
                 app.UseGraphiQLServer(new GraphiQLOptions
                 {
                     Path = "/ui/graphiql/pizza",
-                    GraphQLEndPoint = "/graphql"
+                    GraphQLEndPoint = "/pizza-management/graphql"
                 });
                 app.UseGraphiQLServer(new GraphiQLOptions
                 {
                     Path = "/ui/graphiql/security",
-                    GraphQLEndPoint = "/auth"
+                    GraphQLEndPoint = "/pizza-management/auth"
                 });
             // }
             this.ApplyMigrations(db);

@@ -63,6 +63,8 @@ services:
     networks: 
       - public
       - private
+    depends_on:
+      - identity-server
     volumes: 
       - ./api-gateway/config/public.ocelot.json:/app/ocelot.json
   private_gateway:
@@ -73,6 +75,8 @@ services:
     networks: 
       - local
       - private
+    depends_on:
+      - identity-server
     volumes: 
       - ./api-gateway/config/private.ocelot.json:/app/ocelot.json
   front-app:
@@ -84,6 +88,8 @@ services:
       - local
       - private
       - public
+    depends_on:
+      - identity-server
 networks:
   public: {}
   local: {}

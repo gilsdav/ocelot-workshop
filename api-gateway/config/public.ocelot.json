@@ -17,11 +17,14 @@
             },
             "RouteClaimsRequirement": {
                 "email_verified": "true"
+            },
+            "AddHeadersToRequest": {
+                "CustomerId": "Claims[sub] > value"
             }
         },
         {
             "DownstreamPathTemplate": "/{everything}",
-            "DownstreamScheme": "http",
+            "DownstreamScheme": "ws",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "pizza-management",
