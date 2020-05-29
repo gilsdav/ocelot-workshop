@@ -24,7 +24,7 @@
         },
         {
             "DownstreamPathTemplate": "/{everything}",
-            "DownstreamScheme": "http",
+            "DownstreamScheme": "ws",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "pizza-management",
