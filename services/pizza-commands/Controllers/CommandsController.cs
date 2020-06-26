@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -25,11 +26,11 @@ namespace pizza_commands.Controllers
             {
                 Date = DateTime.Now,
                 Id = index,
-                Pizzas = new[] {rng.Next(1, 10), rng.Next(1, 10)}
+                Pizzas = new[] { rng.Next(1, 10), rng.Next(1, 10) }
             })
             .ToArray();
         }
-        
+
         [HttpPost]
         public Command Post(Command command)
         {
@@ -38,8 +39,16 @@ namespace pizza_commands.Controllers
         }
 
         [HttpGet("customer")]
-        public string GetCurrentCustomer() {
+        public string GetCurrentCustomer()
+        {
             return Request.Headers["CustomerId"];
+        }
+
+
+        [HttpGet("headers")]
+        public IHeaderDictionary GetHeaders()
+        {
+            return Request.Headers;
         }
 
     }

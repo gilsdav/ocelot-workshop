@@ -9,8 +9,14 @@
                     "Port": 80
                 }
             ],
+            "DownstreamHeaderTransform": {
+                "Bonsoir": "Bonjour"
+            },
             "UpstreamPathTemplate": "/pizza-commands/{everything}",
             "UpstreamHttpMethod": [],
+            "UpstreamHeaderTransform": {
+                "Bonjour": "Bonsoir"
+            },
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "IdentityServerKey",
                 "AllowedScopes": []
