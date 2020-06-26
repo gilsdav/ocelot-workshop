@@ -26,7 +26,15 @@
             },
             "AddHeadersToRequest": {
                 "CustomerId": "Claims[sub] > value"
+            },
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "10s",
+                "PeriodTimespan": 10,
+                "Limit": 1
             }
+            
         },
         {
             "DownstreamPathTemplate": "/{everything}",
@@ -52,5 +60,12 @@
             "UpstreamPathTemplate": "/{everything}",
             "Priority": 0
         }
-    ]
+    ],
+    "GlobalConfiguration": {   
+        "RateLimitOptions": {  
+          "DisableRateLimitHeaders": true,  
+          "QuotaExceededMessage": "Vous avez dépassé le quota de requêtes autorisées",  
+          "HttpStatusCode": 999  
+        }  
+      }  
 }
