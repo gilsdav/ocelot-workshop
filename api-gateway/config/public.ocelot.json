@@ -96,11 +96,12 @@
     },
     "Aggregates": [
         {
-          "ReRouteKeys": [
-            "pizza-command",
-            "pizza-price"
-          ],
-          "UpstreamPathTemplate": "/history/{id}"
+            "ReRouteKeys": [
+                "pizza-command",
+                "pizza-price"
+            ],
+            "UpstreamPathTemplate": "/history/{id}",
+            "Aggregator": "MyAggregator"
         }
       ]
 }
