@@ -31,6 +31,17 @@ namespace pizza_commands.Controllers
             .ToArray();
         }
 
+        [HttpGet("{id}")]
+        public Command GetById(int id)
+        {
+            return new Command
+            {
+                Date = DateTime.Now,
+                Id = 1234,
+                Pizzas = new[] { id }
+            };
+        }
+
         [HttpPost]
         public Command Post(Command command)
         {

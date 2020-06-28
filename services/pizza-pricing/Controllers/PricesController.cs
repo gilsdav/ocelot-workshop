@@ -30,6 +30,17 @@ namespace pizza_commands.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("{id}")]
+        public Price GetById(int id)
+        {
+            return new Price
+            {
+                Id = 1234,
+                Pizza = id,
+                Amount = 9
+            };
+        }
         
         [HttpPost]
         public Price Post(Price price)
