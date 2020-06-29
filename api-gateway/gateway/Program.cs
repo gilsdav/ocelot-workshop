@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using gateway.Aggregators;
 
 namespace gateway
 {
@@ -53,7 +54,8 @@ namespace gateway
                 s.AddAuthentication()
                     .AddIdentityServerAuthentication(authenticationProviderKey, options);
 
-                s.AddOcelot();
+                s.AddOcelot()
+                    .AddSingletonDefinedAggregator<MyAggregator>();
             })
             .ConfigureLogging((hostingContext, logging) =>
             {

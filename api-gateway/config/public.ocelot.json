@@ -49,6 +49,32 @@
             "UpstreamHttpMethod": []
         },
         {
+            "DownstreamPathTemplate": "/Commands/{id}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "pizza-commands",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/pizza-commands/Commands/{id}",
+            "UpstreamHttpMethod": [ "Get" ],
+            "Key": "pizza-command"
+        },
+        {
+            "DownstreamPathTemplate": "/Prices/{id}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "pizza-pricing",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/pizza-pricing/Prices/{id}",
+            "UpstreamHttpMethod": [ "Get" ],
+            "Key": "pizza-price"
+        },
+        {
             "DownstreamPathTemplate": "/{everything}",
             "DownstreamScheme": "ws",
             "DownstreamHostAndPorts": [
@@ -67,5 +93,15 @@
           "QuotaExceededMessage": "Vous avez dépassé le quota de requêtes autorisées",  
           "HttpStatusCode": 999  
         }  
-      }  
+    },
+    "Aggregates": [
+        {
+            "ReRouteKeys": [
+                "pizza-command",
+                "pizza-price"
+            ],
+            "UpstreamPathTemplate": "/history/{id}",
+            "Aggregator": "MyAggregator"
+        }
+      ]
 }
