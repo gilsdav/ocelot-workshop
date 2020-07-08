@@ -1,19 +1,16 @@
 {
     "ReRoutes": [
         {
-            "DownstreamPathTemplate": "/api/posts/{postId}",
-            "DownstreamScheme": "https",
+            "DownstreamPathTemplate": "/{everything}",
+            "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "localhost",
+                    "Host": "pizza-commands",
                     "Port": 80
                 }
             ],
-            "UpstreamPathTemplate": "/posts/{postId}",
-            "UpstreamHttpMethod": [
-                "Put",
-                "Delete"
-            ]
+            "UpstreamPathTemplate": "/{everything}",
+            "UpstreamHttpMethod": []
         }
     ]
 }
