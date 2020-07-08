@@ -33,7 +33,11 @@
                 "Period": "10s",
                 "PeriodTimespan": 10,
                 "Limit": 1
-            }
+            },
+            "FileCacheOptions": {
+                "TtlSeconds": 15,
+                "Region": "PizzaCommandRegion"
+            },
             
         },
         {

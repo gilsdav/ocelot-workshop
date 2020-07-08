@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using gateway.Aggregators;
+using Ocelot.Cache.CacheManager;
 
 namespace gateway
 {
@@ -55,7 +56,11 @@ namespace gateway
                     .AddIdentityServerAuthentication(authenticationProviderKey, options);
 
                 s.AddOcelot()
-                    .AddSingletonDefinedAggregator<MyAggregator>();
+                 .AddCacheManager(x =>
+                 {
+                     x.WithDictionaryHandle();
+                 })
+                 .AddSingletonDefinedAggregator<MyAggregator>();
             })
             .ConfigureLogging((hostingContext, logging) =>
             {
