@@ -95,6 +95,7 @@
         }
     ],
     "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:80",
         "RateLimitOptions": {
             "DisableRateLimitHeaders": true,
             "QuotaExceededMessage": "Vous avez dépassé le quota de requêtes autorisées",

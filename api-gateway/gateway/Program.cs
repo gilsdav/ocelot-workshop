@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using gateway.Aggregators;
 using Ocelot.Cache.CacheManager;
+using Ocelot.Administration;
 
 namespace gateway
 {
@@ -32,7 +33,7 @@ namespace gateway
                     .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                     .AddJsonFile("appsettings.json", true, true)
                     .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
-                    .AddJsonFile("ocelot.json")
+                    .AddJsonFile($"config/{Environment.GetEnvironmentVariable("OCELOT_SCOPE")}.ocelot.json")
                     .AddEnvironmentVariables();
             })
             .ConfigureServices(s =>
@@ -56,11 +57,12 @@ namespace gateway
                     .AddIdentityServerAuthentication(authenticationProviderKey, options);
 
                 s.AddOcelot()
-                 .AddCacheManager(x =>
-                 {
-                     x.WithDictionaryHandle();
-                 })
-                 .AddSingletonDefinedAggregator<MyAggregator>();
+                    .AddCacheManager(x =>
+                     {
+                         x.WithDictionaryHandle();
+                     })
+                    .AddSingletonDefinedAggregator<MyAggregator>()
+                    .AddAdministration("/administration", options);
             })
             .ConfigureLogging((hostingContext, logging) =>
             {

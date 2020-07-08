@@ -7,14 +7,12 @@ namespace pizza_commands.BusinessLogic
 {
     public class CommandsBL: ICommandsBL
     {
-         // Don't do that it's ugly.
-        // Just for the demo
+        // Don't do that it's ugly.
+        // Just for the demo of the cache
         private List<Command> commands;
-
 
         public CommandsBL()
         {
-            Console.WriteLine("*********** Cnstruct");
             var rng = new Random();
             this.commands = Enumerable.Range(1, 5).Select(index => new Command
             {
