@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using pizza_commands.BusinessLogic;
+using pizza_commands.BusinessLogic.Interfaces;
 
 namespace pizza_commands
 {
@@ -26,6 +22,7 @@ namespace pizza_commands
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<ICommandsBL, CommandsBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

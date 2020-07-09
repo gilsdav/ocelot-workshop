@@ -79,7 +79,9 @@ services:
     depends_on:
       - identity-server
     volumes:
-      - ./api-gateway/config/public.ocelot.json:/app/ocelot.json
+      - ./api-gateway/config:/app/config
+    environment:
+      - OCELOT_SCOPE=public
   private_gateway:
     build: './api-gateway/gateway'
     image: private_gateway:latest
@@ -91,7 +93,9 @@ services:
     depends_on:
       - identity-server
     volumes:
-      - ./api-gateway/config/private.ocelot.json:/app/ocelot.json
+      - ./api-gateway/config:/app/config
+    environment:
+      - OCELOT_SCOPE=private
   front-app:
     build: './apps/login-app'
     image: front-app:latest

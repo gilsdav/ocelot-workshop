@@ -32,9 +32,12 @@
                 "EnableRateLimiting": true,
                 "Period": "10s",
                 "PeriodTimespan": 10,
-                "Limit": 1
+                "Limit": 10
+            },
+            "FileCacheOptions": {
+                "TtlSeconds": 15,
+                "Region": "PizzaCommandRegion"
             }
-            
         },
         {
             "DownstreamPathTemplate": "/{everything}",
@@ -58,7 +61,9 @@
                 }
             ],
             "UpstreamPathTemplate": "/pizza-commands/Commands/{id}",
-            "UpstreamHttpMethod": [ "Get" ],
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
             "Key": "pizza-command"
         },
         {
@@ -71,7 +76,9 @@
                 }
             ],
             "UpstreamPathTemplate": "/pizza-pricing/Prices/{id}",
-            "UpstreamHttpMethod": [ "Get" ],
+            "UpstreamHttpMethod": [
+                "Get"
+            ],
             "Key": "pizza-price"
         },
         {
@@ -87,12 +94,13 @@
             "Priority": 0
         }
     ],
-    "GlobalConfiguration": {   
-        "RateLimitOptions": {  
-          "DisableRateLimitHeaders": true,  
-          "QuotaExceededMessage": "Vous avez dépassé le quota de requêtes autorisées",  
-          "HttpStatusCode": 999  
-        }  
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:80",
+        "RateLimitOptions": {
+            "DisableRateLimitHeaders": true,
+            "QuotaExceededMessage": "Vous avez dépassé le quota de requêtes autorisées",
+            "HttpStatusCode": 999
+        }
     },
     "Aggregates": [
         {
@@ -103,5 +111,5 @@
             "UpstreamPathTemplate": "/history/{id}",
             "Aggregator": "MyAggregator"
         }
-      ]
+    ]
 }
