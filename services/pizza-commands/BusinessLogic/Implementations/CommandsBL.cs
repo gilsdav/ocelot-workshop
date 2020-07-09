@@ -31,6 +31,7 @@ namespace pizza_commands.BusinessLogic
 
         public List<Command> GetCommands()
         {
+            Console.WriteLine($"SERVICE : {Environment.GetEnvironmentVariable("SERVICE_NUMBER")}");
             return this.commands;
         }
 
