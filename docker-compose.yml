@@ -39,8 +39,8 @@ services:
       - private
     environment:
       - SERVICE_NUMBER=1
-  pizza-commands:
-    build: ./services/second-pizza-commands
+  second-pizza-commands:
+    build: ./services/pizza-commands
     image: second-pizza-commands:latest
     ports:
       - "8083:80"

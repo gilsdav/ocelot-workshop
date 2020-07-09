@@ -7,12 +7,19 @@
                 {
                     "Host": "pizza-commands",
                     "Port": 80
+                },
+                {
+                    "Host": "second-pizza-commands",
+                    "Port": 80
                 }
             ],
             "DownstreamHeaderTransform": {
                 "Bonsoir": "Bonjour"
             },
             "UpstreamPathTemplate": "/pizza-commands/{everything}",
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
+            },
             "UpstreamHttpMethod": [],
             "UpstreamHeaderTransform": {
                 "Bonjour": "Bonsoir"
@@ -35,7 +42,7 @@
                 "Limit": 10
             },
             "FileCacheOptions": {
-                "TtlSeconds": 15,
+                "TtlSeconds": 1,
                 "Region": "PizzaCommandRegion"
             }
         },
