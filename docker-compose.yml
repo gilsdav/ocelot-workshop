@@ -37,6 +37,17 @@ services:
       - db
     networks:
       - private
+  second-pizza-commands:
+    build: ./services/pizza-commands
+    image: second-pizza-commands:latest
+    ports:
+      - "8083:80"
+    depends_on:
+      - db
+    networks:
+      - private
+    environment:
+      - SERVICE_NUMBER=2
   pizza-pricing:
     build: ./services/pizza-pricing
     image: pizza-pricing:latest

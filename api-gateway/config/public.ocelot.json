@@ -7,6 +7,10 @@
                 {
                     "Host": "pizza-commands",
                     "Port": 80
+                },
+                {
+                    "Host": "second-pizza-commands",
+                    "Port": 80
                 }
             ],
             "DownstreamHeaderTransform": {
@@ -16,6 +20,9 @@
             "UpstreamHttpMethod": [],
             "UpstreamHeaderTransform": {
                 "Bonjour": "Bonsoir"
+            },
+            "LoadBalancerOptions": {
+                "Type": "RoundRobin"
             },
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "IdentityServerKey",
