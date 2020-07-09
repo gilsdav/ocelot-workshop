@@ -10,7 +10,7 @@ services:
       - SQLSERVER_PASSWORD=PizzaGraphQL123+
     ports:
       - "1433:1433"
-    networks: 
+    networks:
       - private
       - local # for dev
     # healthcheck:
@@ -24,7 +24,7 @@ services:
     image: pizza-management:latest
     ports:
       - "8080:80"
-    networks: 
+    networks:
       - private
     depends_on:
       - db
@@ -35,14 +35,14 @@ services:
       - "8081:80"
     depends_on:
       - db
-    networks: 
+    networks:
       - private
   pizza-pricing:
     build: ./services/pizza-pricing
     image: pizza-pricing:latest
     ports:
       - "8082:80"
-    networks: 
+    networks:
       - private
     depends_on:
       - db
@@ -51,7 +51,7 @@ services:
     image: identity-server:latest
     ports:
       - "5002:5002"
-    networks: 
+    networks:
       - local
       - private
       - public
@@ -60,31 +60,35 @@ services:
     image: public_gateway:latest
     ports:
       - "8091:80"
-    networks: 
+    networks:
       - public
       - private
     depends_on:
       - identity-server
-    volumes: 
-      - ./api-gateway/config/public.ocelot.json:/app/ocelot.json
+    volumes:
+      - ./api-gateway/config:/app/config
+    environment:
+      - OCELOT_SCOPE=public
   private_gateway:
     build: './api-gateway/gateway'
     image: private_gateway:latest
     ports:
       - "8092:80"
-    networks: 
+    networks:
       - local
       - private
     depends_on:
       - identity-server
-    volumes: 
-      - ./api-gateway/config/private.ocelot.json:/app/ocelot.json
+    volumes:
+      - ./api-gateway/config:/app/config
+    environment:
+      - OCELOT_SCOPE=private
   front-app:
     build: './apps/login-app'
     image: front-app:latest
     ports:
       - "8070:80"
-    networks: 
+    networks:
       - local
       - private
       - public

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using pizza_commands.BusinessLogic.Interfaces;
 
 namespace pizza_commands.Controllers
 {
@@ -12,41 +13,30 @@ namespace pizza_commands.Controllers
     public class CommandsController : ControllerBase
     {
         private readonly ILogger<CommandsController> _logger;
+        private readonly ICommandsBL _commandsBL;
 
-        public CommandsController(ILogger<CommandsController> logger)
+        public CommandsController(ILogger<CommandsController> logger, ICommandsBL commandsBL)
         {
             _logger = logger;
+            _commandsBL = commandsBL;
         }
 
         [HttpGet]
         public IEnumerable<Command> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Command
-            {
-                Date = DateTime.Now,
-                Id = index,
-                Pizzas = new[] { rng.Next(1, 10), rng.Next(1, 10) }
-            })
-            .ToArray();
+           return this._commandsBL.GetCommands();
         }
 
         [HttpGet("{id}")]
         public Command GetById(int id)
         {
-            return new Command
-            {
-                Date = DateTime.Now,
-                Id = 1234,
-                Pizzas = new[] { id }
-            };
+            return this._commandsBL.GetCommand(id);
         }
 
         [HttpPost]
         public Command Post(Command command)
         {
-            command.Id = 10;
-            return command;
+            return this._commandsBL.AddCommand(command);
         }
 
         [HttpGet("customer")]
@@ -56,6 +46,9 @@ namespace pizza_commands.Controllers
         }
 
 
+        /*
+            This get is just to show the headers inside the request
+        */
         [HttpGet("headers")]
         public IHeaderDictionary GetHeaders()
         {
