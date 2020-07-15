@@ -47,15 +47,8 @@ namespace gateway
                     o.RequireHttpsMetadata = false;
                     o.ApiSecret = "secret";
                 };
-                // s.AddAuthentication(options =>
-                // {
-                //     options.DefaultScheme = "Cookies";
-                //     options.DefaultChallengeScheme = "oidc";
-                // })
-                //     .AddCookie("Cookies")
                 s.AddAuthentication()
                     .AddIdentityServerAuthentication(authenticationProviderKey, options);
-
                 s.AddOcelot()
                     .AddCacheManager(x =>
                      {
@@ -72,6 +65,7 @@ namespace gateway
             .UseIISIntegration()
             .Configure(app =>
             {
+                app.UseCookiePolicy();
                 app.UseWebSockets();
                 app.UseOcelot().Wait();
             })
