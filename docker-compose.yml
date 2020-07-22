@@ -37,6 +37,8 @@ services:
       - db
     networks:
       - private
+    environment:
+      - SERVICE_NUMBER=1
   second-pizza-commands:
     build: ./services/pizza-commands
     image: second-pizza-commands:latest
