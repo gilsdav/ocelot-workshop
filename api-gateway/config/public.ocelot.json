@@ -18,11 +18,15 @@
             },
             "UpstreamPathTemplate": "/pizza-commands/{everything}",
             "UpstreamHttpMethod": [],
+            "Priority": 1,
             "UpstreamHeaderTransform": {
-                "Bonjour": "Bonsoir"
+                "Bonjour": "Bonsoir",
+                "Nom": "Java, C#"
             },
             "LoadBalancerOptions": {
-                "Type": "RoundRobin"
+                "Type": "CookieStickySessions",
+                "Key": "PizzaSession",
+                "Expiry": 1800000
             },
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "IdentityServerKey",
