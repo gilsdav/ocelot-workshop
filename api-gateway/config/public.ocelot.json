@@ -11,6 +11,7 @@
             ],
             "UpstreamPathTemplate": "/pizza-commands/{everything}",
             "UpstreamHttpMethod": []
+            
         },
         {
             "DownstreamPathTemplate": "/Commands/{id}",
@@ -39,7 +40,19 @@
             "UpstreamHttpMethod": [
                 "Get"
             ]
-        }
+        },
+        {
+            "DownstreamPathTemplate": "/{everything}",
+            "DownstreamScheme": "ws",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "front-app",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/{everything}",
+            "Priority": 0
+        }  
     ],
     "GlobalConfiguration": {
         "BaseUrl": "http://localhost:80"
