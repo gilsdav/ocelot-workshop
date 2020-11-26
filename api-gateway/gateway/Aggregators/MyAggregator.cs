@@ -16,6 +16,7 @@ namespace gateway.Aggregators
             }).ToList();
             var resp = new StringContent($"{{\"command\": {await responseStrings[0]}, \"price\": {await responseStrings[1]}}}");
             var dst = new DownstreamResponse(resp, System.Net.HttpStatusCode.OK, new List<KeyValuePair<string, IEnumerable<string>>>(), "OK");
+            dst.Headers.Add(new Header("Content-Type", new List<string>{"application/json"}));
             return dst;
         }
     }
