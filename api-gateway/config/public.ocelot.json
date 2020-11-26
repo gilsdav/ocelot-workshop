@@ -7,27 +7,11 @@
                 {
                     "Host": "pizza-commands",
                     "Port": 80
-                },
-                {
-                    "Host": "second-pizza-commands",
-                    "Port": 80
                 }
             ],
-            "DownstreamHeaderTransform": {
-                "Bonsoir": "Bonjour"
-            },
             "UpstreamPathTemplate": "/pizza-commands/{everything}",
             "UpstreamHttpMethod": [],
             "Priority": 1,
-            "UpstreamHeaderTransform": {
-                "Bonjour": "Bonsoir",
-                "Nom": "Java, C#"
-            },
-            "LoadBalancerOptions": {
-                "Type": "CookieStickySessions",
-                "Key": "PizzaSession",
-                "Expiry": 1800000
-            },
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "IdentityServerKey",
                 "AllowedScopes": []
@@ -37,90 +21,10 @@
             },
             "AddHeadersToRequest": {
                 "CustomerId": "Claims[sub] > value"
-            },
-            "RateLimitOptions": {
-                "ClientWhitelist": [],
-                "EnableRateLimiting": true,
-                "Period": "10s",
-                "PeriodTimespan": 10,
-                "Limit": 10
-            },
-            "FileCacheOptions": {
-                "TtlSeconds": 15,
-                "Region": "PizzaCommandRegion"
             }
-        },
-        {
-            "DownstreamPathTemplate": "/{everything}",
-            "DownstreamScheme": "ws",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "pizza-management",
-                    "Port": 80
-                }
-            ],
-            "UpstreamPathTemplate": "/pizza-management/{everything}",
-            "UpstreamHttpMethod": []
-        },
-        {
-            "DownstreamPathTemplate": "/Commands/{id}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "pizza-commands",
-                    "Port": 80
-                }
-            ],
-            "UpstreamPathTemplate": "/pizza-commands/Commands/{id}",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "Key": "pizza-command"
-        },
-        {
-            "DownstreamPathTemplate": "/Prices/{id}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "pizza-pricing",
-                    "Port": 80
-                }
-            ],
-            "UpstreamPathTemplate": "/pizza-pricing/Prices/{id}",
-            "UpstreamHttpMethod": [
-                "Get"
-            ],
-            "Key": "pizza-price"
-        },
-        {
-            "DownstreamPathTemplate": "/{everything}",
-            "DownstreamScheme": "ws",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "front-app",
-                    "Port": 80
-                }
-            ],
-            "UpstreamPathTemplate": "/{everything}",
-            "Priority": 0
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:80",
-        "RateLimitOptions": {
-            "DisableRateLimitHeaders": true,
-            "QuotaExceededMessage": "Vous avez dépassé le quota de requêtes autorisées",
-            "HttpStatusCode": 999
-        }
-    },
-    "Aggregates": [
-        {
-            "ReRouteKeys": [
-                "pizza-command",
-                "pizza-price"
-            ],
-            "UpstreamPathTemplate": "/history/{id}",
-            "Aggregator": "MyAggregator"
-        }
-    ]
+        "BaseUrl": "http://localhost:80"
+    }
 }
