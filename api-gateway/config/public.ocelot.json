@@ -21,8 +21,24 @@
             "FileCacheOptions": {
                 "TtlSeconds": 15,
                 "Region": "PizzaCommandRegion"
+            },
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "IdentityServerKey",
+                "AllowedScopes": []
             }
-        }
+        },
+        {
+            "DownstreamPathTemplate": "/{everything}",
+            "DownstreamScheme": "ws",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "front-app",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/{everything}",
+            "Priority": 0
+        }  
     ],
     "GlobalConfiguration": {
         "BaseUrl": "http://localhost:80",
