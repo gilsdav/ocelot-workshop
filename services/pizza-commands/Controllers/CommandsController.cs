@@ -24,6 +24,7 @@ namespace pizza_commands.Controllers
         [HttpGet]
         public IEnumerable<Command> Get()
         {
+            Console.WriteLine("JE VEUX DES PIZZAS !!");
            return this._commandsBL.GetCommands();
         }
 
