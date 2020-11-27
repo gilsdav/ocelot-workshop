@@ -22,6 +22,18 @@
             "AddHeadersToRequest": {
                 "CustomerId": "Claims[sub] > value"
             }
+        },
+        {
+            "DownstreamPathTemplate": "/{everything}",
+            "DownstreamScheme": "ws",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "front-app",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/{everything}",
+            "Priority": 0
         }
     ],
     "GlobalConfiguration": {
